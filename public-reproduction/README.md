@@ -1,27 +1,35 @@
-# Inspect the documented CADMEA math
+# Inspect the CADMEA mathematics
 
-**This is a new, independently written, explanatory reproduction of the publicly documented scoring model. It is NOT the original CADMEA application's source, NOT a recovered module, and NOT proof that the production system uses this exact implementation.**
+This is a later teaching implementation of the documented scoring model. **It is separate from the original team application's source and does not prove that the deployed application uses this implementation.** The original source remains private.
 
-The original CADMEA application was built by a team. The underlying source and original media remain unpublished here because publication rights have not been confirmed. Instead of copying team-owned work, these standalone files allow a reader to inspect and execute the mathematical **ideas described in the engineering case study**.
+The code uses six configurable weights, keeps unknown values distinct from measured zero, exposes missing information bounds and tests thirteen local policy weight scenarios. All examples are synthetic.
 
-The reproduction uses six configurable weights, keeps unknown indicators distinct from real zero readings, provides mathematical best/worst bounds over unobserved measurements, and enumerates 13 local policy-weight scenarios. All example observations are **synthetic**. No real municipal dataset, proprietary model, authentication or private record is included.
+## Run it
 
-## Verify it yourself
-
-With Node 18 or newer:
+Node 18 or newer; no installation, credentials or network access required:
 
 ```bash
 cd public-reproduction
 npm test
 ```
 
-No installation, credential or network connection is required. The test showing **80 conditional points, 30% weighted coverage, and a 24–94 possible complete-score range** is particularly revealing.
+**10 tests pass.** They include the 80 point, 30% coverage example with complete score bounds of 24 to 94, and a four candidate fixture where the leading two candidates exchange ranks under changed policy weights.
 
-## What this does and does not establish
+## Reading rank outputs
 
-- It makes the public explanation and its sample arithmetic independently checkable.
-- It is **not** the historical May/October CADMEA implementation or an MIT-submittable substitute for the team's source codebase.
-- It does not independently verify municipal data, costs, impact, accessibility or the deployed web app.
-- The original product and its team contributions are documented in the [main case study](../README.md), [engineering notes](../docs/ENGINEERING.md) and [contributions](../docs/CONTRIBUTIONS_AND_EVIDENCE.md).
+| Field | Meaning |
+| :--- | :--- |
+| `bestRank`, `worstRank` | Extrema over scenarios with usable indicators; null when unevaluable |
+| `rankedScenarios` | Number of scenarios in which the candidate received a rank |
+| `topThreeCount` | Number of scenarios with rank at most three, including shared ranks |
 
-The effective next step for an admissions reviewer is access to **the real project's permitted code and a genuine working video/demo**, not simply a reproduction. These remain separate evidence requirements.
+Candidates without usable indicators are excluded from ranking. Equal conditional indices share a competition rank: 1, 1, 3. Top three counts include ties and can therefore include more than three candidates. An ID stabilizes display order without resolving a numerical tie.
+
+Rank sensitivity compares conditional indices under fixed inputs. Candidates with different missing information patterns can still have different coverage; these rankings are provisional. The scenario counts are not probabilities or forecast accuracy.
+
+## Original versus teaching evidence
+
+The [backend cases](../docs/BACKEND_CASE_STUDIES.md) explain the original evaluator and resident evidence logic using inspected source fixtures. The [verification record](../docs/REVIEW_CHECKS.md) records the separate original archive run: 12 passing tests.
+
+This folder makes the mathematics executable. It does not verify city data, municipal adoption or the deployed backend. [Team contributions](../docs/CONTRIBUTIONS_AND_EVIDENCE.md) identify responsibilities in the collaborative project.
+

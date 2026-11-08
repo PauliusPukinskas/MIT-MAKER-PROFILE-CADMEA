@@ -22,7 +22,7 @@ The project's recognition at Make It Real is **team achievement**. It does not i
 | :--- | :--- | :--- |
 | Built a real municipal web prototype | Archived application source ZIP and a 23.8-second product screen recording | A demo is not proof of municipal deployment |
 | Decision model uses six configurable criteria | Reviewed source module and source documentation | Defaults are illustrative policy choices |
-| Model handles incomplete data | Deterministic source tests rerun Nov 2 (12/12 passed) | Tests are synthetic, not field validation |
+| Model handles incomplete data | Original archived suite rerun Nov 2 and Nov 8 (12/12 passed); [source fingerprints and fixtures](BACKEND_CASE_STUDIES.md) | Tests are synthetic, not field validation |
 | Rankings are sensitive to policy weights | Source evaluator and synthetic 13-scenario test | No claim of statistical confidence |
 | OSM mini-infrastructure layer exists | Archived Oct 15 snapshot of 2,036 waste/recycling records | Not 2,036 sports facilities |
 | Active Vilnius challenge recognition | Public hackathon announcement and participant project update | Recognition belongs to entire team |
@@ -45,3 +45,4 @@ The public GitHub repository is a **retrospective engineering case study**. Its 
 - [Public team update on the Active Vilnius challenge](https://www.linkedin.com/posts/paulius-pukinskas-a1b682382_makeitrealhackathon-activevilnius-activity-7462218007243771904-DTz6)
 
 [Overview](../README.md) · [Build history](BUILD_HISTORY.md) · [Engineering case study](ENGINEERING.md)
+

@@ -56,6 +56,12 @@ On **November 2, 2026**, I reran the **12 decision-model tests** locally from th
 
 The checks are evidence of deterministic behavior on test cases; they do **not** establish real-world model accuracy or that the currently deployed site matches the archived snapshot.
 
+## November 8 · Inspecting the original backend again
+
+The archived `municipal-screening-v1.0` evaluator, resident evidence module and original test file were checked together in isolation. All **12 original tests passed** on Node v24.22.1. The [backend cases](BACKEND_CASE_STUDIES.md) record exact file fingerprints and explain missing evidence, community matching and validation using synthetic source fixtures.
+
+The separate public teaching implementation received regression checks for candidates without evidence, tied indices, overflowing weights and actual weight sensitivity. Its suite now has **10 passing tests**. Those teaching code changes do not modify the original archive or the live application.
+
 ## Key iteration lesson
 
 We moved from *“give every project a compelling number”* toward *“show which numbers can be defended, which cannot, and what data is needed next.”*
@@ -63,3 +69,4 @@ We moved from *“give every project a compelling number”* toward *“show whi
 That architectural and product decision is the center of this maker project.
 
 [Overview](../README.md) · [Engineering](ENGINEERING.md) · [Contributions](CONTRIBUTIONS_AND_EVIDENCE.md)
+

@@ -34,7 +34,9 @@ function normalizedWeights(weights) {
     }
     total += value;
   }
-  if (total <= 0) throw new RangeError("Total weight must be positive");
+  if (!Number.isFinite(total) || total <= 0) {
+    throw new RangeError("Total weight must be finite and positive");
+  }
   return Object.fromEntries(CRITERIA.map(key => [key, weights[key] / total]));
 }
 
@@ -89,8 +91,14 @@ export function inspectIllustrativeRankSensitivity(candidates, base = EXAMPLE_WE
     const ordered = candidates.map(c => ({
       id: c.id,
       value: evaluateIllustrativeCandidate(c.indicators, scenario.weights).conditionalIndex
-    })).sort((a, b) => (b.value ?? -1) - (a.value ?? -1) || a.id.localeCompare(b.id));
-    ordered.forEach((entry, idx) => result.get(entry.id).push(idx + 1));
+    })).filter(entry => entry.value !== null)
+      .sort((a, b) => b.value - a.value || a.id.localeCompare(b.id));
+    let rank = 0;
+    ordered.forEach((entry, idx) => {
+      // Equal indices share competition rank; IDs only stabilize display order.
+      if (idx === 0 || entry.value !== ordered[idx - 1].value) rank = idx + 1;
+      result.get(entry.id).push(rank);
+    });
   }
   return {
     scenarios: scenarios.length,
@@ -98,11 +106,13 @@ export function inspectIllustrativeRankSensitivity(candidates, base = EXAMPLE_WE
       const ranks = result.get(id);
       return {
         id,
-        bestRank: Math.min(...ranks),
-        worstRank: Math.max(...ranks),
+        bestRank: ranks.length ? Math.min(...ranks) : null,
+        worstRank: ranks.length ? Math.max(...ranks) : null,
+        rankedScenarios: ranks.length,
         topThreeCount: ranks.filter(rank => rank <= 3).length
       };
     }),
     note: "Derived from synthetic inputs and chosen policy weights, not measured accuracy."
   };
 }
+

@@ -1,31 +1,56 @@
-# Public evidence checks
+# Verification record
 
-Checked on **November 7, 2026**, using **Node v24.22.1**.
+Updated **November 8, 2026**, using **Node v24.22.1**.
 
-## Executed public tests
+## Original archived application: executed locally
+
+The archived evaluator and resident evidence module were tested with their original suite:
+
+```bash
+node --experimental-strip-types --test tests/decision-model.test.mjs
+```
+
+**12 tests passed, 0 failed.** The run used an isolated copy of three original files. Their SHA256 fingerprints are recorded in the [backend case studies](BACKEND_CASE_STUDIES.md#original-source-evidence).
+
+| Original check | Observed behavior |
+| :--- | :--- |
+| Partial evidence | Score 80, coverage 30%, complete score bounds 24 to 94 |
+| Measured zero | Zero stays observed; missing stays unknown |
+| No indicators | Score remains null; bounds remain 0 to 100 |
+| Freshness | Old evidence does not become fresh documented coverage |
+| Review status | Complete referenced inputs still require human review |
+| Validation | Invalid values, provenance, dates, policy weights and duplicate IDs are rejected |
+| Community relevance | Sport aliases match; unrelated district/sport records are excluded |
+| Repeated identifiers | One request, four petition supporters, four combined identifiers in the synthetic fixture |
+| Sensitivity | Thirteen deterministic policy scenarios |
+| Normalization | Community normalization is monotonic and bounded |
+
+The earlier November 2 run also reported 12 passing original tests. The November 8 run verifies the inspected archive again, not the deployed application or a municipal dataset.
+
+## Public teaching implementation: executed locally
 
 ```bash
 cd public-reproduction
 npm test
 ```
 
-**6 tests passed, 0 failed.** These are tests of the independently written public mathematical reproduction:
+**10 tests passed, 0 failed.** Four cases were added to the original six. Three first failed against the previous teaching implementation and passed after correction:
 
-| Check | Observed behavior |
+| Case | Verified result |
 | :--- | :--- |
-| Partial evidence | A conditional index of 80 with 30% coverage has complete score bounds of 24 to 94 |
-| Zero and missing values | An observed zero remains different from an absent indicator |
-| Complete measurements | All six supplied measurements cover the full policy weight |
-| Invalid inputs | Invalid values and weights are rejected |
-| Weight scenarios | One baseline plus twelve perturbations produces 13 scenarios |
-| Rank sensitivity | Synthetic candidate rank changes remain deterministic |
+| Candidate with no indicators | No rank and zero ranked scenarios |
+| Equal conditional indices | Shared competition rank rather than ID based rank |
+| Finite weights whose sum overflows | Reject invalid aggregate weights |
+| Four candidate weight sensitivity | Leading candidates each span ranks 1 to 2; the fourth stays rank 4 |
 
-The earlier **12 passing tests** described in [engineering notes](ENGINEERING.md#verification-performed-for-this-portfolio) came from the archived original decision model on November 2. That separate suite was not rerun in this refresh. The public reproduction is explanatory code, not original team application source.
+The fourth case strengthens coverage of the existing sensitivity behavior. It does not claim that behavior was previously broken.
 
-## Live product checks
+These ten public tests and twelve archived original tests are separate suites. The reproduction remains a later educational implementation.
 
-Opened the anonymous application, selected English and inspected the overview, facilities, demand radar, planned projects and OSM layer. On the captured OSM data copy, selecting Clothing narrowed 2,036 records to 141. The visible map count also depends on its bounds.
+## Product and documentation
 
-The [six direct captures](PRODUCT_WALKTHROUGH.md) retain the observed states. Their [capture record](../assets/live-screenshots/2026-11-07/CAPTURE_INFO.json) includes exact times, URLs and unchanged image hashes. The screenshots document the current collaborative product; they do not establish municipal adoption or validate proxy planning indices.
+The retained November 7 English [product walkthrough](PRODUCT_WALKTHROUGH.md) shows six public views. Its [capture metadata](../assets/live-screenshots/2026-11-07/CAPTURE_INFO.json) records URLs, timestamps and image hashes.
 
-[Overview](../README.md) · [Public reproduction](../public-reproduction/README.md) · [Team credits](CONTRIBUTIONS_AND_EVIDENCE.md)
+The documentation update checks local links and image references against repository inventories. Screenshots demonstrate the collaborative product. Original unit tests establish behavior on synthetic fixtures; neither establishes citywide adoption, official investment policy or real outcome accuracy.
+
+[Overview](../README.md) · [Backend cases](BACKEND_CASE_STUDIES.md) · [Public teaching code](../public-reproduction/README.md)

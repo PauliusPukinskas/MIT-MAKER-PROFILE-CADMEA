@@ -61,3 +61,46 @@ test("rank sensitivity is explicit, deterministic and tied to synthetic data", (
   assert.ok(result.candidates.every(x => x.bestRank >= 1 && x.worstRank <= 3));
   assert.ok(result.candidates.every(x => x.topThreeCount === 13));
 });
+
+test("a candidate without observed indicators receives no rank", () => {
+  const result = inspectIllustrativeRankSensitivity([
+    { id: "No evidence", indicators: {} },
+    { id: "Observed", indicators: { demandPressure: 80 } }
+  ]);
+  const missing = result.candidates.find(x => x.id === "No evidence");
+  const observed = result.candidates.find(x => x.id === "Observed");
+  assert.equal(missing.bestRank, null);
+  assert.equal(missing.worstRank, null);
+  assert.equal(missing.rankedScenarios, 0);
+  assert.equal(missing.topThreeCount, 0);
+  assert.equal(observed.bestRank, 1);
+  assert.equal(observed.rankedScenarios, 13);
+});
+
+test("equal conditional indices share a rank regardless of candidate IDs", () => {
+  const result = inspectIllustrativeRankSensitivity([
+    { id: "Alpha", indicators: { demandPressure: 50 } },
+    { id: "Beta", indicators: { demandPressure: 50 } },
+    { id: "Gamma", indicators: { demandPressure: 40 } }
+  ]);
+  assert.deepEqual(result.candidates.map(x => [x.bestRank, x.worstRank]), [[1, 1], [1, 1], [3, 3]]);
+});
+
+test("finite individual weights cannot overflow their total silently", () => {
+  const huge = Object.fromEntries(CRITERIA.map(key => [key, 1e308]));
+  assert.throws(() => evaluateIllustrativeCandidate({ demandPressure: 80 }, huge), RangeError);
+});
+
+test("changing policy weights exchanges the top two candidates", () => {
+  const fill = x => Object.fromEntries(CRITERIA.map(key => [key, x]));
+  const result = inspectIllustrativeRankSensitivity([
+    { id: "Alpha", indicators: { ...fill(50), demandPressure: 70, accessGap: 30 } },
+    { id: "Beta", indicators: { ...fill(50), demandPressure: 30, accessGap: 70 } },
+    { id: "Gamma", indicators: fill(20) },
+    { id: "Delta", indicators: fill(10) }
+  ]);
+  assert.deepEqual(result.candidates.map(x => [x.bestRank, x.worstRank, x.topThreeCount]), [
+    [1, 2, 13], [1, 2, 13], [3, 3, 13], [4, 4, 0]
+  ]);
+});
+

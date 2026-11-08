@@ -4,11 +4,13 @@
 
 This page explains concrete behavior verified in the CADMEA source archive without releasing jointly owned implementation.
 
+[Backend case studies](BACKEND_CASE_STUDIES.md) connect the original source fixtures to my backend contribution. The [November 8 verification record](REVIEW_CHECKS.md) separates 12 passing original archive tests from 10 passing public teaching tests.
+
 ## The inputs
 
-The evaluator accepts a set of candidate proposals, each with a district, sport, proposed action and six possible indicator measurements. When a measurement is present it carries a source, timestamp and one of three provenance labels:
+The evaluator accepts candidate proposals with a district, sport, proposed action and six possible indicator measurements. Each present measurement names a source and provenance label. Documented evidence requires an observation timestamp; community and proxy inputs may omit it and are then treated as stale.
 
-- **Documented:** a source is supplied; the program does not independently authenticate it.
+- **Documented:** a source and observation timestamp are supplied; the program does not independently authenticate the source.
 - **Community:** self-selected platform input, not representative polling.
 - **Proxy:** an estimate or derived planning signal, not verified unmet demand.
 
@@ -83,3 +85,4 @@ The next genuinely useful phase is a permissioned district pilot with municipal 
 The engine should support human judgment by explaining uncertainty, never conceal it behind a confident score.
 
 [History](BUILD_HISTORY.md) · [Contributions and evidence](CONTRIBUTIONS_AND_EVIDENCE.md)
+
